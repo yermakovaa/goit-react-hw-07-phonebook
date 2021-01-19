@@ -1,17 +1,13 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { filterContact } from '../../redux/contacts/contacts-actions';
-import {
-  getFilter,
-  getContacts,
-} from '../../redux/contacts/contacts-selectors';
+import { contactsActions, contactsSelectors } from '../../redux/contacts';
 import { CSSTransition } from 'react-transition-group';
 import popTransition from '../../utils/transitions/pop.module.css';
 import s from './Filter.module.css';
 
 function Filter() {
   const dispatch = useDispatch();
-  const filter = useSelector(getFilter);
-  const contacts = useSelector(getContacts);
+  const filter = useSelector(contactsSelectors.getFilter);
+  const contacts = useSelector(contactsSelectors.getContacts);
 
   return (
     <CSSTransition
@@ -27,7 +23,9 @@ function Filter() {
           className={s.input}
           type="text"
           value={filter}
-          onChange={e => dispatch(filterContact(e.target.value))}
+          onChange={e =>
+            dispatch(contactsActions.filterContact(e.target.value))
+          }
         />
       </label>
     </CSSTransition>

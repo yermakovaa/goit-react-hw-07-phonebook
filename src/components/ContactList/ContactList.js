@@ -1,9 +1,6 @@
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/contacts/contacts-actions';
-import {
-  getVisibleContacts,
-  getContacts,
-} from '../../redux/contacts/contacts-selectors';
+import { contactsOperations, contactsSelectors } from '../../redux/contacts';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { ReactComponent as DeleteIcon } from '../../img/delete.svg';
 import s from './ContactList.module.css';
@@ -11,8 +8,10 @@ import popTransition from '../../utils/transitions/pop.module.css';
 
 function ContactList() {
   const dispatch = useDispatch();
-  const visibleContacts = useSelector(getVisibleContacts);
-  const contacts = useSelector(getContacts);
+  const visibleContacts = useSelector(contactsSelectors.getVisibleContacts);
+  const contacts = useSelector(contactsSelectors.getContacts);
+
+  useEffect(() => dispatch(contactsOperations.fetchContacts()), [dispatch]);
 
   return (
     <>
@@ -42,7 +41,7 @@ function ContactList() {
               <button
                 className={s.btn}
                 type="button"
-                onClick={() => dispatch(deleteContact(id))}
+                onClick={() => dispatch(contactsOperations.deleteContact(id))}
               >
                 <DeleteIcon width="26" height="26" />
               </button>
