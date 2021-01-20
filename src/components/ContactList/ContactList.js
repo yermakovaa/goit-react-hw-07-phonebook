@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { contactsOperations, contactsSelectors } from '../../redux/contacts';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ReactComponent as DeleteIcon } from '../../img/delete.svg';
 import s from './ContactList.module.css';
-import popTransition from '../../utils/transitions/pop.module.css';
 
 function ContactList() {
   const dispatch = useDispatch();
@@ -15,40 +14,47 @@ function ContactList() {
 
   return (
     <>
-      <CSSTransition
-        in={!contacts.length}
-        timeout={250}
-        classNames={popTransition}
-        mountOnEnter
-        unmountOnExit
-      >
-        <p>Your phonebook is empty. Please add contact.</p>
-      </CSSTransition>
-      <TransitionGroup component="ul" className={s.list}>
-        {visibleContacts.map(({ id, name, number }) => (
-          <CSSTransition
-            key={id}
-            timeout={250}
-            mountOnEnter
-            unmountOnExit
-            classNames={popTransition}
-          >
-            <li className={s.item}>
-              <p className={s.info}>
-                <b>{name}</b>
-                <em>{number}</em>
-              </p>
-              <button
-                className={s.btn}
-                type="button"
-                onClick={() => dispatch(contactsOperations.deleteContact(id))}
+      {contacts.length > 0 && (
+        <motion.ul className={s.list}>
+          <AnimatePresence>
+            {visibleContacts.map(({ id, name, number }) => (
+              <motion.li
+                className={s.item}
+                key={id}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0 }}
+                transition={{ ease: 'easeOut', duration: 0.3 }}
               >
-                <DeleteIcon width="26" height="26" />
-              </button>
-            </li>
-          </CSSTransition>
-        ))}
-      </TransitionGroup>
+                <p className={s.info}>
+                  <b>{name}</b>
+                  <em>{number}</em>
+                </p>
+                <button
+                  className={s.btn}
+                  type="button"
+                  onClick={() => dispatch(contactsOperations.deleteContact(id))}
+                >
+                  <DeleteIcon width="26" height="26" />
+                </button>
+              </motion.li>
+            ))}
+          </AnimatePresence>
+        </motion.ul>
+      )}
+
+      {!contacts.length && (
+        <AnimatePresence>
+          <motion.p
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            transition={{ ease: 'easeOut', duration: 0.3 }}
+          >
+            Your phonebook is empty. Please add contact.
+          </motion.p>
+        </AnimatePresence>
+      )}
     </>
   );
 }

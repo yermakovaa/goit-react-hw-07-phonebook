@@ -1,34 +1,35 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { contactsActions, contactsSelectors } from '../../redux/contacts';
-import { CSSTransition } from 'react-transition-group';
-import popTransition from '../../utils/transitions/pop.module.css';
+import { motion, AnimatePresence } from 'framer-motion';
 import s from './Filter.module.css';
 
 function Filter() {
   const dispatch = useDispatch();
   const filter = useSelector(contactsSelectors.getFilter);
   const contacts = useSelector(contactsSelectors.getContacts);
+  // const animatedStyle = useSpring(config);
 
   return (
-    <CSSTransition
-      in={contacts.length > 0}
-      timeout={250}
-      classNames={popTransition}
-      mountOnEnter
-      unmountOnExit
-    >
-      <label className={s.label}>
-        Find contacts by name
-        <input
-          className={s.input}
-          type="text"
-          value={filter}
-          onChange={e =>
-            dispatch(contactsActions.filterContact(e.target.value))
-          }
-        />
-      </label>
-    </CSSTransition>
+    <>
+      {contacts.length > 0 && (
+        <AnimatePresence>
+          <label className={s.label}>
+            <motion.input
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              transition={{ ease: 'easeOut', duration: 0.3 }}
+              className={s.input}
+              type="text"
+              value={filter}
+              onChange={e =>
+                dispatch(contactsActions.filterContact(e.target.value))
+              }
+            />
+          </label>
+        </AnimatePresence>
+      )}
+    </>
   );
 }
 

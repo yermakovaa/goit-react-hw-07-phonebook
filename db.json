@@ -1,14 +1,3 @@
 {
-  "contacts": [
-    {
-      "name": "Rosie Simpson",
-      "number": "222-22-22",
-      "id": 2
-    },
-    {
-      "name": "BarberShop",
-      "number": "265-48-96",
-      "id": 3
-    }
-  ]
+  "contacts": []
 }

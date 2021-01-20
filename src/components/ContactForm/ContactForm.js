@@ -68,34 +68,36 @@ function ContactForm() {
   };
 
   return (
-    <form className={s.form} onSubmit={handleSubmit}>
-      <label className={s.label}>
-        Name
-        <input
-          className={s.input}
-          type="text"
-          name="name"
-          value={name}
-          onChange={handleChange}
-          placeholder="Ivan Ivanov"
-        />
-      </label>
-      <label className={s.label}>
-        Number
-        <Cleave
-          options={{ delimiter: '-', blocks: [3, 2, 2] }}
-          placeholder="111-11-11"
-          type="tel"
-          name="number"
-          value={number}
-          onChange={handleChange}
-          className={s.input}
-        />
-      </label>
-      <button className={s.btn} type="submit">
-        Add contact
-      </button>
-    </form>
+    <>
+      <form className={s.form} onSubmit={handleSubmit}>
+        <label className={s.label}>
+          Name
+          <input
+            className={s.input}
+            type="text"
+            name="name"
+            value={name}
+            onChange={handleChange}
+            placeholder="Ivan Ivanov"
+          />
+        </label>
+        <label className={s.label}>
+          Number
+          <Cleave
+            options={{ delimiter: '-', blocks: [3, 2, 2] }}
+            placeholder="111-11-11"
+            type="tel"
+            name="number"
+            value={number}
+            onChange={handleChange}
+            className={s.input}
+          />
+        </label>
+        <button className={s.btn} type="submit">
+          Add contact
+        </button>
+      </form>
+    </>
   );
 }
 
