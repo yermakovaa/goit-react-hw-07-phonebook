@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { contactsOperations, contactsSelectors } from '../../redux/contacts';
 import { motion, AnimatePresence } from 'framer-motion';
+import ErrorView from '../ErrorView';
 import { ReactComponent as DeleteIcon } from '../../img/delete.svg';
 import s from './ContactList.module.css';
 
@@ -9,12 +10,14 @@ function ContactList() {
   const dispatch = useDispatch();
   const visibleContacts = useSelector(contactsSelectors.getVisibleContacts);
   const contacts = useSelector(contactsSelectors.getContacts);
+  const isLoading = useSelector(contactsSelectors.getLoading);
+  const error = useSelector(contactsSelectors.getError);
 
   useEffect(() => dispatch(contactsOperations.fetchContacts()), [dispatch]);
 
   return (
     <>
-      {contacts.length > 0 && (
+      {contacts.length > 0 && !error && (
         <motion.ul className={s.list}>
           <AnimatePresence>
             {visibleContacts.map(({ id, name, number }) => (
@@ -43,7 +46,7 @@ function ContactList() {
         </motion.ul>
       )}
 
-      {!contacts.length && (
+      {!contacts.length && !error && !isLoading && (
         <AnimatePresence>
           <motion.p
             initial={{ scale: 0 }}
@@ -55,6 +58,8 @@ function ContactList() {
           </motion.p>
         </AnimatePresence>
       )}
+
+      {error && <ErrorView message={error.message} />}
     </>
   );
 }

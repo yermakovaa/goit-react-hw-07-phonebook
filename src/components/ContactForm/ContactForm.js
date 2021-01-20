@@ -3,11 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { contactsOperations, contactsSelectors } from '../../redux/contacts';
 import Cleave from 'cleave.js/react';
 import { toast } from 'react-toastify';
+import LoaderComponent from '../LoaderComponent';
 import s from './ContactForm.module.css';
 
 function ContactForm() {
   const dispatch = useDispatch();
   const contacts = useSelector(contactsSelectors.getContacts);
+  const isLoading = useSelector(contactsSelectors.getLoading);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -93,9 +95,12 @@ function ContactForm() {
             className={s.input}
           />
         </label>
-        <button className={s.btn} type="submit">
-          Add contact
-        </button>
+        {!isLoading && (
+          <button className={s.btn} type="submit">
+            Add contact
+          </button>
+        )}
+        {isLoading && <LoaderComponent />}
       </form>
     </>
   );
