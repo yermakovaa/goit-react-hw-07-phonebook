@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { contactsOperations, contactsSelectors } from '../../redux/contacts';
 import { motion, AnimatePresence } from 'framer-motion';
+import { variants } from '../../utils/motionVar';
 import ErrorView from '../ErrorView';
 import { ReactComponent as DeleteIcon } from '../../img/delete.svg';
 import s from './ContactList.module.css';
@@ -24,10 +25,11 @@ function ContactList() {
               <motion.li
                 className={s.item}
                 key={id}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0 }}
-                transition={{ ease: 'easeOut', duration: 0.3 }}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition="transition"
+                variants={variants}
               >
                 <p className={s.info}>
                   <b>{name}</b>
@@ -49,10 +51,11 @@ function ContactList() {
       {!contacts.length && !error && !isLoading && (
         <AnimatePresence>
           <motion.p
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            transition={{ ease: 'easeOut', duration: 0.3 }}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition="transition"
+            variants={variants}
           >
             Your phonebook is empty. Please add contact.
           </motion.p>

@@ -1,24 +1,26 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { contactsActions, contactsSelectors } from '../../redux/contacts';
 import { motion, AnimatePresence } from 'framer-motion';
+import { variants } from '../../utils/motionVar';
 import s from './Filter.module.css';
 
 function Filter() {
   const dispatch = useDispatch();
   const filter = useSelector(contactsSelectors.getFilter);
   const contacts = useSelector(contactsSelectors.getContacts);
-  // const animatedStyle = useSpring(config);
+  const error = useSelector(contactsSelectors.getError);
 
   return (
     <>
-      {contacts.length > 0 && (
+      {contacts.length > 0 && !error && (
         <AnimatePresence>
           <label className={s.label}>
             <motion.input
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-              transition={{ ease: 'easeOut', duration: 0.3 }}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition="transition"
+              variants={variants}
               className={s.input}
               type="text"
               value={filter}
